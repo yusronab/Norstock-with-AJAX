@@ -12,4 +12,4 @@
 
 <p>Website : <a href="https://norstock.herokuapp.com/frontend/index.html" target="_blank">Nors Stock</a></p>
 
-<img width="500" src="/assets/img/banner.png">tml)
+<img width="500" src="/assets/img/banner.png">)
