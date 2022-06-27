@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nors Stock</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../assets/css/style.css">
+    <link rel="shortcut icon" type="image/x-icon" href="../assets/img/logo.png" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css">
+</head>
+
+<body>
+
+    <header>
+        <nav class="navbar navbar-expand-lg navbar-light bg-white p-3 px-md-3 py-md-3 fixed-top shadow sm">
+            <div class="container">
+                <a href="index.html" class="navbar-brand font-weight-bold">
+                    <img src="../assets/img/logo.png" width="30" height="30" alt=""
+                        class="d-inline-block align-top mr-1">
+                    Nors Stock
+                </a>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown"
+                    aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNavDropdown">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item active">
+                            <a href="index.html" class="nav-link text-primary font-weight-bold mr-3">Home</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <div class="container" style="margin-top: 100px; margin-bottom: 100px;">
+        <div class="pt-5">
+            <h3 class="text-center"><b>Ubah Detail Barang</b></h3>
+            <div class="card mt-5">
+                <div class="card-body">
+                    <div class="form-group">
+                        <label for="nama">Nama</label>
+                        <input type="text" class="form-control" id="id" name="id" required>
+                        <input type="text" class="form-control" id="nama" name="nama" placeholder="Masukan Nama..."
+                            required>
+                    </div>
+                    <div class="form-group">
+                        <label for="kategori">Kategori</label>
+                        <input type="text" class="form-control" id="kategori" name="kategori"
+                            placeholder="Masukan Kategori..." required>
+                    </div>
+                    <div class="form-group">
+                        <label for="stok">Stok</label>
+                        <input type="number" class="form-control" id="stok" name="stok" placeholder="Masukan Stok..."
+                            required>
+                    </div>
+                    <div class="mt-5 text-right">
+                        <button class="btn btn-secondary mr-3" type="button" onclick="history.back()">Batal</button>
+                        <button id="ubah" class="simpan btn btn-primary"
+                            onclick="return confirm('Apakah anda yakin?')">Simpan</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+            crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+            integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+            crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.1/dist/js/bootstrap.min.js"
+            integrity="sha384-VHvPCCyXqtD5DqJeNxl2dtTyhF78xXNXdkwX1CZeRusQfRKp+tA7hAShOK/B/fQ2"
+            crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+
+        <script>
+            $(document).ready(function () {
+                var param = window.location.search;
+                var urlParam = new URLSearchParams(param);
+                var id = urlParam.get("id");
+
+                var data = new Object();
+                data.id = id;
+                $.post(
+                    "../backend/get_data_id.php",
+                    JSON.stringify(data),
+                    function (resp) {
+                        var data = JSON.parse(resp);
+                        $("#id").val(data.id);
+                        $("#nama").val(data.nama);
+                        $("#kategori").val(data.kategori);
+                        $("#stok").val(data.stok);
+                    }
+                )
+            })
+
+            $(document).on('click', '#ubah', function () {
+                var barang = new Object();
+                barang.id = $("#id").val();
+                barang.nama = $("#nama").val();
+                barang.kategori = $("#kategori").val();
+                barang.stok = $("#stok").val();
+                $.post(
+                    "../backend/update_data.php",
+                    JSON.stringify(barang),
+                    function (resp) {
+                        var result = JSON.parse(resp);
+                        if (result.status == "success") {
+                            alert("Perubahan data telah berhasil");
+                            window.location.href = "index.html";
+                        } else {
+                            alert("Perubahan data GAGAL");
+                        }
+                    }
+                );
+            });
+        </script>
+
+</body>
+
+</html>
